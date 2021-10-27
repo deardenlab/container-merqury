@@ -41,8 +41,6 @@ RUN     git checkout -f v1.3 && \
 WORKDIR /meryl/src
 RUN     make
 
-RUN     meryl --help
-
 ENV     MERQURY=/merqury
 
 WORKDIR /
@@ -51,6 +49,6 @@ WORKDIR /merqury
 RUN     git checkout -f v1.3 && \
         git submodule update --init --recursive
 
-RUN     /merqury/merqury.sh --help
+RUN     /merqury/merqury.sh
 
 ENTRYPOINT ["/merqury/merqury.sh"]
