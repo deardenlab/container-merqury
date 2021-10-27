@@ -6,6 +6,7 @@ LABEL VERSION "ubuntu 20.04"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LC_ALL=C
+ENV PATH="${PATH}:/meryl/bin"
 
 RUN     apt-get clean && \
         rm -r /var/lib/apt/lists/*
@@ -20,6 +21,16 @@ RUN     . /etc/os-release \
         apt-get update && apt-get upgrade -y --fix-missing
 
 RUN     apt-get update && apt-get install -y  --no-install-recommends \
-            build-essential
+            build-essential \
+            git \
+            wget
+
+RUN     git clone https://github.com/marbl/meryl.git /meryl
+WORKDIR /meryl
+RUN     git checkout -f v1.3 && \
+        git submodule update --init --recursive
+
+WORKDIR /meryl/src
+RUN     make
 
 ENTRYPOINT ["/usr/bin/cat /etc/os-release"]
