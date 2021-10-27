@@ -1,8 +1,8 @@
 FROM ubuntu:20.04
 
-LABEL SOFTWARE_NAME ubuntu 20.04
+LABEL SOFTWARE_NAME marbl/merqury
 LABEL MAINTAINER "Tom Harrop"
-LABEL VERSION "ubuntu 20.04"
+LABEL VERSION "v1.3"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LC_ALL=C
@@ -21,8 +21,14 @@ RUN     . /etc/os-release \
         apt-get update && apt-get upgrade -y --fix-missing
 
 RUN     apt-get update && apt-get install -y  --no-install-recommends \
+            bedtools \
             build-essential \
+            default-jre \
             git \
+            r-cran-argparse \
+            r-cran-ggplot2 \
+            r-cran-scales \
+            samtools \
             wget
 
 RUN     git clone https://github.com/marbl/meryl.git /meryl
@@ -35,4 +41,14 @@ RUN     make
 
 RUN     meryl --help
 
-ENTRYPOINT ["/usr/bin/cat /etc/os-release"]
+ENV     MERQURY=/merqury
+
+WORKDIR /
+RUN     git clone https://github.com/marbl/merqury.git /merqury
+WORKDIR /merqury
+RUN     git checkout -f v1.3 && \
+        git submodule update --init --recursive
+
+RUN     /merqury/merqury.sh
+
+ENTRYPOINT ["/merqury/merqury.sh"]
