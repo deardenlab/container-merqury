@@ -33,4 +33,6 @@ RUN     git checkout -f v1.3 && \
 WORKDIR /meryl/src
 RUN     make
 
+RUN     meryl --help
+
 ENTRYPOINT ["/usr/bin/cat /etc/os-release"]
