@@ -6,7 +6,7 @@ LABEL VERSION "v1.3"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LC_ALL=C
-ENV PATH="${PATH}:/meryl/bin"
+ENV PATH="${PATH}:/meryl/build/bin"
 
 RUN     apt-get clean && \
         rm -r /var/lib/apt/lists/*
@@ -51,6 +51,6 @@ WORKDIR /merqury
 RUN     git checkout -f v1.3 && \
         git submodule update --init --recursive
 
-RUN     /merqury/merqury.sh
+RUN     /merqury/merqury.sh --help
 
 ENTRYPOINT ["/merqury/merqury.sh"]
